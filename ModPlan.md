@@ -234,7 +234,7 @@ I = 철괴, C = 캡슐 코어, G = 유리
 **개발 환경 (WSL2 Ubuntu 24.04):**
 - **OS**: WSL2 Ubuntu 24.04 LTS
 - **Java**: OpenJDK 17+
-- **NeoForge**: 21.1.x
+- **NeoForge**: 21.7.3-beta
 - **IDE**: Claude Code (또는 VS Code with WSL extension)
 - **빌드 툴**: Gradle 8.x
 - **터미널**: Ubuntu bash

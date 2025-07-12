@@ -40,9 +40,8 @@ public class CapsuleUtils {
                         // Capture block entity data if present
                         BlockEntity blockEntity = level.getBlockEntity(worldPos);
                         if (blockEntity != null) {
-                            CompoundTag entityTag = new CompoundTag();
                             try {
-                                blockEntity.saveWithoutMetadata(entityTag::write);
+                                CompoundTag entityTag = blockEntity.saveWithoutMetadata(level.registryAccess());
                                 blockEntities.put(relativePos, entityTag);
                             } catch (Exception e) {
                                 // Skip if save fails
@@ -61,54 +60,28 @@ public class CapsuleUtils {
         if (level == null || targetPos == null || capsuleData == null || capsuleData.isEmpty()) {
             return false;
         }
-        
+
         try {
-            // First pass: Place all blocks
             Map<BlockPos, BlockState> allBlocks = capsuleData.getAllBlocks();
+            Map<BlockPos, CompoundTag> allBlockEntities = capsuleData.getAllBlockEntities();
+
             for (Map.Entry<BlockPos, BlockState> entry : allBlocks.entrySet()) {
                 BlockPos relativePos = entry.getKey();
                 BlockState blockState = entry.getValue();
                 BlockPos worldPos = targetPos.offset(relativePos);
-                
-                // Check if the position is valid and within world bounds
+
                 if (isValidPosition(level, worldPos)) {
-                    // Remove existing block entity first
-                    BlockEntity existingEntity = level.getBlockEntity(worldPos);
-                    if (existingEntity != null) {
-                        level.removeBlockEntity(worldPos);
-                    }
-                    
-                    // Place the block
                     level.setBlock(worldPos, blockState, 3);
-                }
-            }
-            
-            // Second pass: Restore block entities
-            Map<BlockPos, CompoundTag> allBlockEntities = capsuleData.getAllBlockEntities();
-            for (Map.Entry<BlockPos, CompoundTag> entry : allBlockEntities.entrySet()) {
-                BlockPos relativePos = entry.getKey();
-                CompoundTag entityData = entry.getValue();
-                BlockPos worldPos = targetPos.offset(relativePos);
-                
-                if (isValidPosition(level, worldPos)) {
-                    BlockEntity blockEntity = level.getBlockEntity(worldPos);
-                    if (blockEntity != null) {
-                        // Update the position in the NBT data
-                        CompoundTag dataToLoad = entityData.copy();
-                        dataToLoad.putInt("x", worldPos.getX());
-                        dataToLoad.putInt("y", worldPos.getY());
-                        dataToLoad.putInt("z", worldPos.getZ());
-                        
-                        try {
-                            blockEntity.load(dataToLoad, level.registryAccess());
-                            blockEntity.setChanged();
-                        } catch (Exception e) {
-                            // Skip if load fails
+
+                    if (allBlockEntities.containsKey(relativePos)) {
+                        CompoundTag entityData = allBlockEntities.get(relativePos);
+                        BlockEntity blockEntity = BlockEntity.loadStatic(worldPos, blockState, entityData, level.registryAccess());
+                        if (blockEntity != null) {
+                            level.setBlockEntity(blockEntity);
                         }
                     }
                 }
             }
-            
             return true;
         } catch (Exception e) {
             return false;

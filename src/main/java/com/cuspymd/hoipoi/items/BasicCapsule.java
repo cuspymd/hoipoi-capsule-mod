@@ -59,7 +59,7 @@ public class BasicCapsule extends Item {
             
             CompoundTag tag = new CompoundTag();
             capsuleData.saveToNBT(tag);
-            itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag), false);
+            itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
             
             player.displayClientMessage(Component.translatable("item.hoipoicapsulemod.basic_capsule.structure_captured", 
                 capsuleData.getBlockCount()), false);
@@ -117,20 +117,20 @@ public class BasicCapsule extends Item {
                 CompoundTag tag = customData.copyTag();
                 CapsuleData capsuleData = CapsuleData.loadFromNBT(tag);
                 
-                tooltip.add(Component.translatable("item.hoipoicapsulemod.basic_capsule.tooltip.has_structure"), false);
+                tooltip.add(Component.translatable("item.hoipoicapsulemod.basic_capsule.tooltip.has_structure"));
                 tooltip.add(Component.translatable("item.hoipoicapsulemod.basic_capsule.tooltip.block_count", 
-                    capsuleData.getBlockCount()), false);
+                    capsuleData.getBlockCount()));
                 tooltip.add(Component.translatable("item.hoipoicapsulemod.basic_capsule.tooltip.size", 
                     capsuleData.getDimensions().getX(), 
                     capsuleData.getDimensions().getY(), 
-                    capsuleData.getDimensions().getZ()), false);
+                    capsuleData.getDimensions().getZ()));
             }
         } else {
-            tooltip.add(Component.translatable("item.hoipoicapsulemod.basic_capsule.tooltip.empty"), false);
+            tooltip.add(Component.translatable("item.hoipoicapsulemod.basic_capsule.tooltip.empty"));
         }
         
-        tooltip.add(Component.translatable("item.hoipoicapsulemod.basic_capsule.tooltip.usage1"), false);
-        tooltip.add(Component.translatable("item.hoipoicapsulemod.basic_capsule.tooltip.usage2"), false);
+        tooltip.add(Component.translatable("item.hoipoicapsulemod.basic_capsule.tooltip.usage1"));
+        tooltip.add(Component.translatable("item.hoipoicapsulemod.basic_capsule.tooltip.usage2"));
     }
     
     @Override
