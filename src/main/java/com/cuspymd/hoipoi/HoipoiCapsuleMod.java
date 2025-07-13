@@ -56,17 +56,17 @@ public class HoipoiCapsuleMod {
             .alwaysEdible().nutrition(1).saturationModifier(2f).build()));
 
     // Basic Capsule item
-    // public static final DeferredItem<BasicCapsule> BASIC_CAPSULE = ITEMS.register("basic_capsule", 
-    //         () -> new BasicCapsule(new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<BasicCapsule> BASIC_CAPSULE = ITEMS.registerItem("basic_capsule", 
+            BasicCapsule::new, (new Item.Properties().stacksTo(1)));
 
     // Creates a creative tab with the id "hoipoicapsulemod:capsule_tab" for capsule items
-    // public static final DeferredHolder<CreativeModeTab, CreativeModeTab> CAPSULE_TAB = CREATIVE_MODE_TABS.register("capsule_tab", () -> CreativeModeTab.builder()
-    //         .title(Component.translatable("itemGroup.hoipoicapsulemod.capsules")) //The language key for the title of your CreativeModeTab
-    //         .withTabsBefore(CreativeModeTabs.TOOLS_AND_UTILITIES)
-    //         .icon(() -> BASIC_CAPSULE.get().getDefaultInstance())
-    //         .displayItems((parameters, output) -> {
-    //             output.accept(BASIC_CAPSULE.get()); // Add the basic capsule to the tab
-    //         }).build());
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> CAPSULE_TAB = CREATIVE_MODE_TABS.register("capsule_tab", () -> CreativeModeTab.builder()
+            .title(Component.translatable("itemGroup.hoipoicapsulemod.capsules")) //The language key for the title of your CreativeModeTab
+            .withTabsBefore(CreativeModeTabs.TOOLS_AND_UTILITIES)
+            .icon(() -> BASIC_CAPSULE.get().getDefaultInstance())
+            .displayItems((parameters, output) -> {
+                output.accept(BASIC_CAPSULE.get()); // Add the basic capsule to the tab
+            }).build());
 
     // Creates a creative tab with the id "hoipoicapsulemod:example_tab" for the example item, that is placed after the combat tab
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
