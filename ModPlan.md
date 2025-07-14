@@ -36,20 +36,23 @@
 - CapsuleUtils.java (저장/배치 로직)
 ```
 
-### Phase 2: 영역 선택 시스템 (2-3주)
-**목표**: 플레이어가 원하는 크기로 영역 지정
+### Phase 2: 홀드 기반 영역 선택 시스템 (2-3주)
+**목표**: 캡슐만으로 홀드 기반 실시간 영역 선택
 
 **구현 기능:**
-- 캡슐 완드 아이템 추가 (영역 선택 도구)
-- 좌클릭/우클릭으로 두 모서리 지정
-- 선택된 영역 시각적 표시 (파티클)
-- 최대 크기 제한 시스템
+- 우클릭 홀드로 실시간 영역 표시
+- 시선 방향 기반 영역 위치 조정
+- 마우스 휠로 거리 조정 (3-10블록)
+- 실시간 미리보기 렌더링
+- 지형 충돌 자동 처리
+- 홀드 해제로 즉시 구조물 저장
 
 **새로운 클래스:**
 ```java
-- CapsuleWand.java (선택 도구)
-- RegionSelector.java (영역 관리)
-- ParticleManager.java (시각 효과)
+- HoldInputHandler.java (홀드 입력 처리)
+- RegionPositionCalculator.java (위치 계산)
+- PreviewRenderer.java (실시간 미리보기)
+- CapsuleClientEvents.java (클라이언트 이벤트)
 ```
 
 ### Phase 3: 캡슐 타입 및 GUI (3-4주)
@@ -122,13 +125,18 @@ public class StructureData {
 
 ### 주요 시스템들
 
-**1. 구조물 캡처 시스템**
+**1. 홀드 기반 구조물 캡처 시스템**
 ```java
-public class StructureCapture {
-    public static StructureData captureRegion(Level world, BoundingBox region) {
+public class HoldBasedCapture {
+    public static void startHolding(Player player, ItemStack capsule) {
+        // 홀드 시작, 실시간 미리보기 활성화
+        // 시선 방향 기반 영역 위치 계산
+        // 캡슐 크기에 맞는 영역 설정
+    }
+    
+    public static StructureData captureOnRelease(Level world, BoundingBox region) {
+        // 홀드 해제 시 즉시 구조물 저장
         // 블록 스캔 및 데이터 수집
-        // 블록 엔티티 NBT 추출
-        // 엔티티 데이터 수집
         // 압축 및 최적화
     }
 }
@@ -145,13 +153,21 @@ public class StructureDeployment {
 }
 ```
 
-**3. 미리보기 시스템**
+**3. 실시간 미리보기 시스템**
 ```java
 public class PreviewRenderer {
     @OnlyIn(Dist.CLIENT)
-    public static void renderPreview(PoseStack poseStack, StructureData data, BlockPos pos) {
-        // 반투명 블록 렌더링
+    public static void renderHoldPreview(PoseStack poseStack, BoundingBox region, BlockPos pos) {
+        // 홀드 중 실시간 영역 표시
+        // 반투명 박스 렌더링
         // 충돌 블록 강조 표시
+        // 거리 조정 시 실시간 업데이트
+    }
+    
+    @OnlyIn(Dist.CLIENT)
+    public static void renderDeployPreview(PoseStack poseStack, StructureData data, BlockPos pos) {
+        // 배치 전 미리보기
+        // 반투명 블록 렌더링
     }
 }
 ```
@@ -171,8 +187,8 @@ public class PreviewRenderer {
 - **Creative Capsule**: 크리에이티브 전용 무제한 캡슐
 
 **도구:**
-- **Capsule Wand**: 영역 선택 도구
-- **Capsule Scanner**: 구조물 정보 확인 도구
+- **Capsule Scanner**: 구조물 정보 확인 도구 (향후 추가 예정)
+- **주요 변경**: 캡슐 완드 제거, 캡슐만으로 홀드 기반 선택
 
 ### 제작 레시피
 
@@ -199,13 +215,15 @@ I = 철괴, C = 캡슐 코어, G = 유리
 ### 기본 워크플로우
 
 1. **준비 단계**
-   - 캡슐과 완드 제작
+   - 캡슐 제작 (완드 불필요)
    - 저장할 구조물 준비
 
-2. **구조물 저장**
-   - 완드로 영역 선택 (좌클릭/우클릭)
-   - 캡슐 우클릭으로 저장 실행
-   - 저장 애니메이션 및 효과음
+2. **구조물 저장 (홀드 방식)**
+   - 캡슐을 들고 우클릭 홀드 시작
+   - 플레이어 앞에 영역이 실시간 표시
+   - 시선 움직임으로 영역 위치 조정
+   - 마우스 휠로 거리 조정
+   - 홀드 해제로 즉시 저장
 
 3. **구조물 배치**
    - 원하는 위치에서 캡슐 우클릭
@@ -322,7 +340,7 @@ I = 철괴, C = 캡슐 코어, G = 유리
 | 단계 | 기간 | 주요 작업 |
 |------|------|-----------|
 | Phase 1 | 3주 | 기본 캡슐 시스템 |
-| Phase 2 | 3주 | 영역 선택 시스템 |
+| Phase 2 | 3주 | 홀드 기반 영역 선택 시스템 |
 | Phase 3 | 4주 | 캡슐 타입 & GUI |
 | Phase 4 | 5주 | 고급 기능 구현 |
 | Phase 5 | 4주 | 최적화 & 특수 기능 |

@@ -12,9 +12,9 @@ A Minecraft mod inspired by Dragon Ball's Hoipoi capsule technology that allows 
 - **Creative Tab**: Dedicated creative mode tab for capsule items
 
 ### Planned Features
-- **Region Selection**: Choose custom areas with a selection wand
+- **Hold-based Region Selection**: Right-click hold for real-time area selection
 - **Multiple Capsule Types**: Small (8x8x8), Medium (16x16x16), Large (32x32x32)
-- **Structure Preview**: See structures before placement
+- **Real-time Preview**: Live structure preview during selection
 - **GUI Interface**: Name and manage stored structures
 - **Advanced Features**: Entity storage, rotation, collision detection
 
@@ -27,7 +27,7 @@ A Minecraft mod inspired by Dragon Ball's Hoipoi capsule technology that allows 
 
 ## Usage
 
-### Basic Capsule Usage
+### Basic Capsule Usage (Phase 1)
 
 1. **Craft a Basic Capsule** (recipe available in-game)
 2. **Capture a Structure**:
@@ -39,10 +39,25 @@ A Minecraft mod inspired by Dragon Ball's Hoipoi capsule technology that allows 
    - The structure will be placed at the clicked location
    - The capsule will become empty after deployment
 
+### Hold-based Selection (Phase 2 - Coming Soon)
+
+1. **Dynamic Area Selection**:
+   - Hold right-click with a capsule to activate selection mode
+   - A preview region appears in front of you based on capsule size
+   - Move your mouse to adjust the region position in real-time
+   - Use mouse wheel to adjust distance (3-10 blocks)
+   - Release right-click to capture the structure instantly
+2. **Smart Features**:
+   - Automatic terrain collision adjustment
+   - Visual feedback with transparent preview boxes
+   - Minimum hold time to prevent accidental captures
+
 ### Tips
 - Capsules show structure information in their tooltip
 - Block entities (chests, signs, etc.) are preserved during capture/deployment
 - Only non-air blocks are captured to save space
+- Different capsule types will have different capture sizes (Phase 3)
+- Hold-based selection provides much more intuitive control (Phase 2)
 
 ## Development
 
@@ -96,6 +111,12 @@ src/main/java/com/cuspymd/hoipoi/
 │   └── CapsuleData.java       # Structure data management
 ├── items/
 │   └── BasicCapsule.java      # Capsule item implementation
+├── system/                    # Phase 2 additions
+│   ├── HoldInputHandler.java  # Hold input processing
+│   ├── RegionPositionCalculator.java # Position calculation
+│   └── PreviewRenderer.java   # Real-time preview rendering
+├── client/
+│   └── CapsuleClientEvents.java # Client-side events
 └── utils/
     └── CapsuleUtils.java      # Core utility functions
 ```
@@ -108,10 +129,13 @@ src/main/java/com/cuspymd/hoipoi/
 - [x] Block entity preservation
 - [x] Basic UI feedback
 
-### Phase 2: Region Selection System (In Progress)
-- [ ] Capsule wand for area selection
-- [ ] Visual selection indicators
-- [ ] Size limitation system
+### Phase 2: Hold-based Region Selection System (In Progress)
+- [ ] Right-click hold input handling
+- [ ] Real-time region preview rendering
+- [ ] Gaze-direction based positioning
+- [ ] Mouse wheel distance adjustment
+- [ ] Terrain collision auto-adjustment
+- [ ] Hold release confirmation system
 
 ### Phase 3: Capsule Types & GUI
 - [ ] Multiple capsule sizes
