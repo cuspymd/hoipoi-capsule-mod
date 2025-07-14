@@ -24,7 +24,7 @@ public class CapsuleUtils {
         BlockPos minPos = centerPos.offset(-halfSize, -halfSize, -halfSize);
         BlockPos maxPos = centerPos.offset(halfSize, halfSize, halfSize);
         
-        // Capture blocks in the 3x3x3 area
+        // Capture blocks in the area
         for (int x = minPos.getX(); x <= maxPos.getX(); x++) {
             for (int y = minPos.getY(); y <= maxPos.getY(); y++) {
                 for (int z = minPos.getZ(); z <= maxPos.getZ(); z++) {
