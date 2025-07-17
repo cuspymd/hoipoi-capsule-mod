@@ -74,9 +74,9 @@ public class HoipoiCapsuleModClient implements ClientModInitializer {
 		Vec3d playerPos = player.getPos();
 		Vec3d lookDir = player.getRotationVec(1.0f);
 		
-		BlockPos targetPos = new BlockPos((int) Math.floor(playerPos.x + lookDir.x * 3), 
+		BlockPos targetPos = new BlockPos((int) Math.floor(playerPos.x + lookDir.x * 5), 
 		                                  (int) Math.floor(playerPos.y), 
-		                                  (int) Math.floor(playerPos.z + lookDir.z * 3));
+		                                  (int) Math.floor(playerPos.z + lookDir.z * 5));
 		
 		MatrixStack matrices = context.matrixStack();
 		VertexConsumerProvider.Immediate vertexConsumers = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
