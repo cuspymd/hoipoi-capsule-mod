@@ -40,10 +40,15 @@ public class HoipoiCapsuleMod implements ModInitializer {
 		ServerPlayNetworking.registerGlobalReceiver(CapturePayload.ID, (payload, context) -> {
 			context.server().execute(() -> {
 				if (context.player().getMainHandStack().getItem() instanceof BasicCapsule capsule) {
-					double reachDistance = 5.0; // Or get from player attributes
-					var hitResult = context.player().raycast(reachDistance, 1.0f, false);
-					var pos = ((net.minecraft.util.hit.BlockHitResult)hitResult).getBlockPos();
-					capsule.captureStructure(context.player().getWorld(), pos, context.player(), context.player().getMainHandStack());
+					// Use the same calculation as client preview
+					var playerPos = context.player().getPos();
+					var lookDir = context.player().getRotationVec(1.0f);
+					var targetPos = new net.minecraft.util.math.BlockPos(
+						(int) Math.floor(playerPos.x + lookDir.x * 5), 
+						(int) Math.floor(playerPos.y), 
+						(int) Math.floor(playerPos.z + lookDir.z * 5)
+					);
+					capsule.captureStructure(context.player().getWorld(), targetPos, context.player(), context.player().getMainHandStack());
 				}
 			});
 		});
@@ -51,10 +56,15 @@ public class HoipoiCapsuleMod implements ModInitializer {
 		ServerPlayNetworking.registerGlobalReceiver(PlacePayload.ID, (payload, context) -> {
 			context.server().execute(() -> {
 				if (context.player().getMainHandStack().getItem() instanceof BasicCapsule capsule) {
-					double reachDistance = 5.0; // Or get from player attributes
-					var hitResult = context.player().raycast(reachDistance, 1.0f, false);
-					var pos = ((net.minecraft.util.hit.BlockHitResult)hitResult).getBlockPos();
-					capsule.placeStructure(context.player().getWorld(), pos.up(), context.player(), context.player().getMainHandStack());
+					// Use the same calculation as client preview
+					var playerPos = context.player().getPos();
+					var lookDir = context.player().getRotationVec(1.0f);
+					var targetPos = new net.minecraft.util.math.BlockPos(
+						(int) Math.floor(playerPos.x + lookDir.x * 5), 
+						(int) Math.floor(playerPos.y), 
+						(int) Math.floor(playerPos.z + lookDir.z * 5)
+					);
+					capsule.placeStructure(context.player().getWorld(), targetPos, context.player(), context.player().getMainHandStack());
 				}
 			});
 		});
